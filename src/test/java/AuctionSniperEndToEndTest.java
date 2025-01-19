@@ -1,12 +1,13 @@
+import mock.auction.FakeAuctionServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 public class AuctionSniperEndToEndTest {
-    private final FackAuctionServer auction = new FackAuctionServer("item-12345");
+    private final FakeAuctionServer auction = new FakeAuctionServer("item-12345");
     private final ApplicationRunner application = new ApplicationRunner();
 
     @Test
-    void sniperJoinsAuctionUntilAuctionCloses() {
+    void sniperJoinsAuctionUntilAuctionCloses() throws InterruptedException {
         // init
         auction.startSellingItem();
 
@@ -16,7 +17,7 @@ public class AuctionSniperEndToEndTest {
         auction.hasReceivedJoinRequestFromSniper();
 
         // action
-        auction.announceCloused();
+        auction.announceClosed();
         // expected
         application.showsSniperHasLostAuction();
     }
