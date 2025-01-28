@@ -1,4 +1,4 @@
-package mock.xmpp;
+package xmpp;
 
 public class Message {
 }

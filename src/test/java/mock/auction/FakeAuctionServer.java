@@ -1,9 +1,9 @@
 package mock.auction;
 
-import mock.xmpp.Chat;
-import mock.xmpp.ChatManagerListener;
-import mock.xmpp.Message;
-import mock.xmpp.XMPPConnection;
+import xmpp.Chat;
+import xmpp.ChatManagerListener;
+import xmpp.Message;
+import xmpp.XMPPConnection;
 
 public class FakeAuctionServer {
     public static final String ITEM_ID_AS_LOGIN = "auction-%s";

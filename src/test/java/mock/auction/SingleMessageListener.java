@@ -1,8 +1,8 @@
 package mock.auction;
 
-import mock.xmpp.Chat;
-import mock.xmpp.Message;
-import mock.xmpp.MessageListener;
+import xmpp.Chat;
+import xmpp.Message;
+import xmpp.MessageListener;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.concurrent.ArrayBlockingQueue;
