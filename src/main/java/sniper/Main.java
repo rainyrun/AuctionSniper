@@ -1,7 +1,13 @@
+package sniper;
+
 import xmpp.*;
 
+public class Main implements AuctionEventListener {
+    public static final String JOIN_COMMAND_FORMAT = "Command: JOIN;";
+    public static final String BID_COMMAND_FORMAT = "Command: BID; Price: %d;";
+    public static final String EVENT_FORMAT = "Event: PRICE; CurrentPrice: %d; Increment: %d; Bidder: %s;";
+    public static final String EVENT_CLOSE = "Event: CLOSE;";
 
-public class Main {
     private static final String AUCTION_RESOURCE = "Auction";
     private static final String ITEM_ID_AS_LOGIN = "auction-%s";
     private static final String AUCTION_ID_FORMAT = ITEM_ID_AS_LOGIN + "@%s/" + AUCTION_RESOURCE;
@@ -22,14 +28,9 @@ public class Main {
 
     private void joinAuction(String itemId, XMPPConnection connection) {
         Chat chat = connection.getChatManager().createChat(auctionId(itemId, connection),
-                new MessageListener() {
-            public void processMessage(Chat achat, Message message) {
-                ui.showStatus(MainWindow.STATUS_LOST);
-            }
-        });
+                new AuctionMessageTranslator(this));
         this.notToBeGCd = chat;
-
-        chat.sendMessage(new Message());
+        chat.sendMessage(new Message(JOIN_COMMAND_FORMAT));
     }
 
     private static String auctionId(String itemId, XMPPConnection connection) {
@@ -45,5 +46,15 @@ public class Main {
 
     public String getStatus() {
         return ui.getStatus();
+    }
+
+    @Override
+    public void auctionClosed() {
+        ui.showStatus(MainWindow.STATUS_LOST);
+    }
+
+    @Override
+    public void currentPrice(int price, int increment) {
+
     }
 }

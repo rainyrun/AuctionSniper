@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 public class SingleMessageListener implements MessageListener {
     private final ArrayBlockingQueue<Message> messages = new ArrayBlockingQueue<>(1);
@@ -14,7 +15,9 @@ public class SingleMessageListener implements MessageListener {
     public void processMessage(Chat chat, Message message) {
         messages.add(message);
     }
-    public void receiveAMessage() throws InterruptedException {
-        Assertions.assertNotNull(messages.poll(5, TimeUnit.SECONDS));
+    public void receiveAMessage(Function<? super String, Boolean> messageMatcher) throws InterruptedException {
+        Message message = messages.poll(5, TimeUnit.SECONDS);
+        Assertions.assertNotNull(message);
+        Assertions.assertTrue(messageMatcher.apply(message.getBody()));
     }
 }

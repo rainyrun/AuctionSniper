@@ -1,4 +1,7 @@
+package helper;
+
 import org.junit.jupiter.api.Assertions;
+import sniper.Main;
 
 public class AuctionSniperDriver {
     public AuctionSniperDriver() {

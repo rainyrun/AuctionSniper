@@ -4,24 +4,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChatManager {
-    private List<Chat> chats = new ArrayList<>(2);
+    private Chat chat;
+    private List<Chat> peerChats = new ArrayList<>(1);
     private ChatManagerListener chatManagerListener;
+    private String username;
+    private String resource;
+
+    public ChatManager(String username, String resource) {
+        this.username = username;
+        this.resource = resource;
+        chat = new Chat(this);
+    }
     public void addChatListener(ChatManagerListener chatManagerListener) {
         this.chatManagerListener = chatManagerListener;
     }
 
     public Chat createChat(String id, MessageListener messageListener) {
-        Chat chat = new Chat(this);
-        chats.add(chat);
         chat.addMessageListener(messageListener);
 
-        Chat chatPeer = new Chat(this);
-        chats.add(chatPeer);
-        chatManagerListener.chatCreated(chatPeer, true);
+        XMPPConnection connection = XMPPConnection.getConnection(id);
+        Chat peerChat = connection.getChatManager().chat;
+        peerChats.add(peerChat);
+        peerChat.getChatManager().peerChats.add(chat);
+
+        peerChat.getChatManager().chatManagerListener.chatCreated(peerChat, true);
         return chat;
     }
 
-    public List<Chat> getChats() {
-        return chats;
+    public List<Chat> getPeerChats() {
+        return peerChats;
+    }
+
+    public String getUsername() {
+        return username;
     }
 }

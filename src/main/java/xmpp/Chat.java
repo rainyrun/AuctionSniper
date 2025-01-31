@@ -13,10 +13,16 @@ public class Chat {
     }
 
     public void sendMessage(Message message) {
-        for (Chat chat : chatManager.getChats()) {
-            if (chat != this) {
-                chat.messageListener.processMessage(chat, message);
-            }
+        for (Chat chat : chatManager.getPeerChats()) {
+            chat.messageListener.processMessage(chat, message);
         }
+    }
+
+    public String getParticipant() {
+        return chatManager.getPeerChats().get(0).chatManager.getUsername();
+    }
+
+    public ChatManager getChatManager() {
+        return chatManager;
     }
 }
