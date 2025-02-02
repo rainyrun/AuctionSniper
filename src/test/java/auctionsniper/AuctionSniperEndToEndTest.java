@@ -48,6 +48,24 @@ public class AuctionSniperEndToEndTest {
         application.showsSniperHasLostAuction();
     }
 
+    @Test
+    void sniperWinsAnAuctionByBiddingHigher() throws InterruptedException {
+        auction.startSellingItem();
+
+        application.startBiddingIn(auction);
+        auction.hasReceivedJoinRequestFromSniper(ApplicationRunner.SNIPER_ID);
+
+        auction.reportPrice(1000, 98, "other bidder");
+        application.hasShownSniperIsBidding();
+        auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_ID);
+
+        auction.reportPrice(1098, 97, ApplicationRunner.SNIPER_ID);
+        application.hasShownSniperIsWinning();
+
+        auction.announceClosed();
+        application.showsSniperHasWonAuction();
+    }
+
     @AfterEach
     void stop() {
         auction.stop();

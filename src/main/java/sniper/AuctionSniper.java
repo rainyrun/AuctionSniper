@@ -1,8 +1,10 @@
 package sniper;
 
-public class AuctionSniper implements  AuctionEventListener {
+public class AuctionSniper implements AuctionEventListener {
     private SniperListener sniperListener;
     private Auction auction;
+    private boolean isWinning = false;
+
     public AuctionSniper(SniperListener sniperListener, Auction auction) {
         this.sniperListener = sniperListener;
         this.auction = auction;
@@ -10,12 +12,21 @@ public class AuctionSniper implements  AuctionEventListener {
 
     @Override
     public void auctionClosed() {
-        sniperListener.sniperLost();
+        if (isWinning) {
+            sniperListener.sniperWon();
+        } else {
+            sniperListener.sniperLost();
+        }
     }
 
     @Override
-    public void currentPrice(int price, int increment) {
-        auction.bid(price + increment);
-        sniperListener.sniperBidding();
+    public void currentPrice(int price, int increment, PriceSource priceSource) {
+        isWinning = PriceSource.FromSniper.equals(priceSource);
+        if (isWinning) {
+            sniperListener.sniperWinning();
+        } else {
+            auction.bid(price + increment);
+            sniperListener.sniperBidding();
+        }
     }
 }

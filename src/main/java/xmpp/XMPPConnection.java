@@ -53,4 +53,8 @@ public class XMPPConnection {
     public String getServiceName() {
         return hostname;
     }
+
+    public String getUser() {
+        return username;
+    }
 }

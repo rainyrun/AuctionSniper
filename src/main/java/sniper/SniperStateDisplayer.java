@@ -21,4 +21,9 @@ public class SniperStateDisplayer implements SniperListener {
     public void sniperWinning() {
         ui.showStatus(MainWindow.STATUS_WINNING);
     }
+
+    @Override
+    public void sniperWon() {
+        ui.showStatus(MainWindow.STATUS_WON);
+    }
 }
