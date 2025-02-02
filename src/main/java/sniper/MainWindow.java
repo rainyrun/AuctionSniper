@@ -4,12 +4,9 @@ public class MainWindow {
     public static final String STATUS_JOINING = "joining";
     public static final String STATUS_LOST = "lost";
     public static final String STATUS_BIDDING = "bidding";
+    public static final String STATUS_WINNING = "winning";
 
-    private String sniperStatus = STATUS_JOINING;
-
-    public String getStatus() {
-        return sniperStatus;
-    }
+    public static String sniperStatus = STATUS_JOINING;
 
     public void showStatus(String status) {
         sniperStatus = status;

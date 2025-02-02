@@ -12,7 +12,6 @@ public class ApplicationRunner {
 
     public void startBiddingIn(FakeAuctionServer auction) {
         Main.main(FakeAuctionServer.XMPP_HOSTNAME, SNIPER_ID, SNIPER_PASSWORD, auction.getItemId());
-        Main main = new Main();
         driver = new AuctionSniperDriver();
         driver.showSniperStatus(MainWindow.STATUS_JOINING);
     }

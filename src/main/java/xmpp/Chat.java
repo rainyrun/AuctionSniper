@@ -18,6 +18,11 @@ public class Chat {
         }
     }
 
+    public void sendMessage(String message) {
+        Message msg = new Message(message);
+        sendMessage(msg);
+    }
+
     public String getParticipant() {
         return chatManager.getPeerChats().get(0).chatManager.getUsername();
     }

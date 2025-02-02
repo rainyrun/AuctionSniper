@@ -2,7 +2,7 @@ package sniper;
 
 import xmpp.*;
 
-public class Main implements AuctionEventListener {
+public class Main {
     public static final String JOIN_COMMAND_FORMAT = "Command: JOIN;";
     public static final String BID_COMMAND_FORMAT = "Command: BID; Price: %d;";
     public static final String EVENT_FORMAT = "Event: PRICE; CurrentPrice: %d; Increment: %d; Bidder: %s;";
@@ -12,13 +12,13 @@ public class Main implements AuctionEventListener {
     private static final String ITEM_ID_AS_LOGIN = "auction-%s";
     private static final String AUCTION_ID_FORMAT = ITEM_ID_AS_LOGIN + "@%s/" + AUCTION_RESOURCE;
 
-    private MainWindow ui;
+
     private Chat notToBeGCd;
 
     public static Main main;
 
+
     public Main() {
-        ui = new MainWindow();
     }
 
     public static void main(String... args) {
@@ -27,10 +27,13 @@ public class Main implements AuctionEventListener {
     }
 
     private void joinAuction(String itemId, XMPPConnection connection) {
-        Chat chat = connection.getChatManager().createChat(auctionId(itemId, connection),
-                new AuctionMessageTranslator(this));
+        Chat chat = connection.getChatManager().createChat(auctionId(itemId, connection), null);
         this.notToBeGCd = chat;
-        chat.sendMessage(new Message(JOIN_COMMAND_FORMAT));
+
+        Auction auction = new XMPPAuction(chat);
+        MessageListener translator = new AuctionMessageTranslator(new AuctionSniper(new SniperStateDisplayer(), auction));
+        chat.addMessageListener(translator);
+        auction.join();
     }
 
     private static String auctionId(String itemId, XMPPConnection connection) {
@@ -42,19 +45,5 @@ public class Main implements AuctionEventListener {
         connection.connect();
         connection.login(username, password, AUCTION_RESOURCE);
         return connection;
-    }
-
-    public String getStatus() {
-        return ui.getStatus();
-    }
-
-    @Override
-    public void auctionClosed() {
-        ui.showStatus(MainWindow.STATUS_LOST);
-    }
-
-    @Override
-    public void currentPrice(int price, int increment) {
-
     }
 }

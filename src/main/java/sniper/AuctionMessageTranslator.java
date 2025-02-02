@@ -15,22 +15,53 @@ public class AuctionMessageTranslator implements MessageListener {
 
     @Override
     public void processMessage(Chat chat, Message message) {
-        Map<String, String> event = unpackEventFrom(message);
-        String type = event.get("Event");
+        AuctionEvent event = AuctionEvent.from(message.getBody());
+        String type = event.type();
         if ("CLOSE".equals(type)) {
             listener.auctionClosed();
         } else if ("PRICE".equals(type)) {
-            listener.currentPrice(Integer.parseInt(event.get("CurrentPrice")),
-                    Integer.parseInt(event.get("Increment")));
+            listener.currentPrice(event.currentPrice(), event.increment());
         }
     }
 
-    private Map<String, String> unpackEventFrom(Message message) {
-        Map<String, String> event = new HashMap<>();
-        for (String s : message.getBody().split(";")) {
-            String[] pair = s.split(":");
-            event.put(pair[0].trim(), pair[1].trim());
+    private static class AuctionEvent {
+        private final Map<String, String> fields = new HashMap<>();
+
+        public String type() {
+            return get("Event");
         }
-        return event;
+
+        private String get(String fieldName) {
+            return fields.get(fieldName);
+        }
+
+        public int currentPrice() {
+            return getInt("CurrentPrice");
+        }
+
+        private int getInt(String fieldName) {
+            return Integer.parseInt(get(fieldName));
+        }
+
+        public int increment() {
+            return getInt("Increment");
+        }
+
+        static AuctionEvent from(String messageBody) {
+            AuctionEvent event = new AuctionEvent();
+            for (String filed : fieldsIn(messageBody)) {
+                event.addField(filed);
+            }
+            return event;
+        }
+
+        private void addField(String filed) {
+            String[] pair = filed.split(":");
+            fields.put(pair[0].trim(), pair[1].trim());
+        }
+
+        private static String[] fieldsIn(String messageBody) {
+            return messageBody.split(";");
+        }
     }
 }
