@@ -12,6 +12,8 @@ public class Main {
     private static final String ITEM_ID_AS_LOGIN = "auction-%s";
     private static final String AUCTION_ID_FORMAT = ITEM_ID_AS_LOGIN + "@%s/" + AUCTION_RESOURCE;
 
+    private final SnipersTableModel snipers = new SnipersTableModel();
+    private MainWindow ui;
 
     private Chat notToBeGCd;
 
@@ -19,6 +21,7 @@ public class Main {
 
 
     public Main() {
+        ui = new MainWindow(snipers);
     }
 
     public static void main(String... args) {
@@ -31,7 +34,8 @@ public class Main {
         this.notToBeGCd = chat;
 
         Auction auction = new XMPPAuction(chat);
-        MessageListener translator = new AuctionMessageTranslator(connection.getUser(), new AuctionSniper(new SniperStateDisplayer(), auction));
+        MessageListener translator = new AuctionMessageTranslator(connection.getUser(),
+                new AuctionSniper(new SwingThreadSniperListener(snipers), auction, itemId));
         chat.addMessageListener(translator);
         auction.join();
     }
