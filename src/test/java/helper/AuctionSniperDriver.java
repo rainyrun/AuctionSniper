@@ -1,24 +1,23 @@
 package helper;
 
-import org.junit.jupiter.api.Assertions;
 import sniper.MainWindow;
+import sniper.SniperSnapshot;
+import sniper.SniperState;
 
 public class AuctionSniperDriver {
     public AuctionSniperDriver() {
     }
 
-    public void showSniperStatus(String status) {
-        Assertions.assertEquals(status, MainWindow.snipers.getStatusText());
-    }
-
-    public void showSniperStatus(String itemId, int lastPrice, int lastBid, String status) {
-        Assertions.assertEquals(itemId, MainWindow.snipers.getItemId());
-        Assertions.assertEquals(lastPrice, MainWindow.snipers.getLastPrice());
-        Assertions.assertEquals(lastBid, MainWindow.snipers.getLastBid());
-        Assertions.assertEquals(status, MainWindow.snipers.getStatusText());
+    public void showSniperStatus(String itemId, int lastPrice, int lastBid, SniperState state) {
+        SniperSnapshot snapshot = new SniperSnapshot(itemId, lastPrice, lastBid, state);
+        MainWindow.snipers.rowMatching(snapshot);
     }
 
     public void dispose() {
 
+    }
+
+    public void startBiddingFor(String itemId) {
+        MainWindow.addItem(itemId);
     }
 }

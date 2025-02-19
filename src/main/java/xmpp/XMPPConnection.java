@@ -9,7 +9,7 @@ public class XMPPConnection {
     private String username;
     private String password;
     private String resource;
-    private ChatManager chatManager;
+    private ChatManager chatManager = new ChatManager();
 
     private static final String ID_FORMAT = "%s@%s/%s";
 
@@ -28,8 +28,6 @@ public class XMPPConnection {
         this.username = username;
         this.password = password;
         this.resource = resource;
-
-        chatManager = new ChatManager(username, resource);
 
         String id = getId();
         CONNECTION_MAP.put(id, this);
@@ -56,5 +54,31 @@ public class XMPPConnection {
 
     public String getUser() {
         return username;
+    }
+
+    public class ChatManager {
+        private ChatManagerListener chatManagerListener;
+
+        public void addChatListener(ChatManagerListener chatManagerListener) {
+            this.chatManagerListener = chatManagerListener;
+        }
+
+        public Chat createChat(String id, MessageListener messageListener) {
+            Chat chat = new Chat(this);
+            chat.addMessageListener(messageListener);
+
+            XMPPConnection connection = XMPPConnection.getConnection(id);
+            Chat peerChat = new Chat(connection.getChatManager());
+
+            peerChat.setPeerChat(chat);
+            chat.setPeerChat(peerChat);
+
+            peerChat.getChatManager().chatManagerListener.chatCreated(peerChat, true);
+            return chat;
+        }
+
+        public String getUsername() {
+            return username;
+        }
     }
 }

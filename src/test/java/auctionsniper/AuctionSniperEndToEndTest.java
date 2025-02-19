@@ -23,7 +23,7 @@ public class AuctionSniperEndToEndTest {
         // action
         auction.announceClosed();
         // expected
-        application.showsSniperHasLostAuction();
+        application.showsSniperHasLostAuction(auction, 0, 0);
     }
 
     @Test
@@ -39,14 +39,14 @@ public class AuctionSniperEndToEndTest {
         // action
         auction.reportPrice(1000, 98, "other bidder");
         // expected
-        application.hasShownSniperIsBidding(1000, 1098);
+        application.hasShownSniperIsBidding(auction, 1000, 1098);
         // expected
         auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_ID);
 
         // action
         auction.announceClosed();
         // expected
-        application.showsSniperHasLostAuction();
+        application.showsSniperHasLostAuction(auction, 1000, 1098);
     }
 
     @Test
@@ -57,14 +57,43 @@ public class AuctionSniperEndToEndTest {
         auction.hasReceivedJoinRequestFromSniper(ApplicationRunner.SNIPER_ID);
 
         auction.reportPrice(1000, 98, "other bidder");
-        application.hasShownSniperIsBidding(1000, 1098);
+        application.hasShownSniperIsBidding(auction, 1000, 1098);
         auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_ID);
 
         auction.reportPrice(1098, 97, ApplicationRunner.SNIPER_ID);
-        application.hasShownSniperIsWinning(1098);
+        application.hasShownSniperIsWinning(auction, 1098);
 
         auction.announceClosed();
-        application.showsSniperHasWonAuction(1098);
+        application.showsSniperHasWonAuction(auction, 1098);
+    }
+
+
+    @Test
+    void sniperBidsForMultipleItems() throws InterruptedException {
+        auction.startSellingItem();
+        auction2.startSellingItem();
+
+        application.startBiddingIn(auction, auction2);
+        auction.hasReceivedJoinRequestFromSniper(ApplicationRunner.SNIPER_ID);
+        auction2.hasReceivedJoinRequestFromSniper(ApplicationRunner.SNIPER_ID);
+
+        auction.reportPrice(1000, 98, "other bidder");
+//        application.hasShownSniperIsBidding(auction, 1000, 1098);
+        auction.hasReceivedBid(1098, ApplicationRunner.SNIPER_ID);
+
+        auction2.reportPrice(500, 21, "other bidder");
+//        application.hasShownSniperIsBidding(auction2, 500, 521);
+        auction2.hasReceivedBid(521, ApplicationRunner.SNIPER_ID);
+
+        auction.reportPrice(1098, 97, ApplicationRunner.SNIPER_ID);
+        auction2.reportPrice(521, 22, ApplicationRunner.SNIPER_ID);
+        application.hasShownSniperIsWinning(auction, 1098);
+        application.hasShownSniperIsWinning(auction2, 521);
+
+        auction.announceClosed();
+        auction2.announceClosed();
+        application.showsSniperHasWonAuction(auction, 1098);
+        application.showsSniperHasWonAuction(auction2, 521);
     }
 
     @AfterEach

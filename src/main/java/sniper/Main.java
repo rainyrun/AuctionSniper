@@ -2,6 +2,9 @@ package sniper;
 
 import xmpp.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
     public static final String JOIN_COMMAND_FORMAT = "Command: JOIN;";
     public static final String BID_COMMAND_FORMAT = "Command: BID; Price: %d;";
@@ -15,7 +18,7 @@ public class Main {
     private final SnipersTableModel snipers = new SnipersTableModel();
     private MainWindow ui;
 
-    private Chat notToBeGCd;
+    private List<Chat> notToBeGCd = new ArrayList<>();
 
     public static Main main;
 
@@ -26,18 +29,29 @@ public class Main {
 
     public static void main(String... args) {
         main = new Main();
-        main.joinAuction(args[3], connection(args[0], args[1], args[2]));
+        XMPPConnection connection = connection(args[0], args[1], args[2]);
+        main.addUserRequestListenerFor(connection);
+    }
+
+    private void addUserRequestListenerFor(XMPPConnection connection) {
+        ui.addUserRequestListener(new UserRequestListener() {
+            @Override
+            public void joinAuction(String itemId) {
+                snipers.addSniper(SniperSnapshot.joining(itemId));
+                Chat chat = connection.getChatManager().createChat(auctionId(itemId, connection), null);
+                notToBeGCd.add(chat);
+
+                Auction auction = new XMPPAuction(chat);
+                MessageListener translator = new AuctionMessageTranslator(connection.getUser(),
+                        new AuctionSniper(new SwingThreadSniperListener(snipers), auction, itemId));
+                chat.addMessageListener(translator);
+                auction.join();
+            }
+        });
     }
 
     private void joinAuction(String itemId, XMPPConnection connection) {
-        Chat chat = connection.getChatManager().createChat(auctionId(itemId, connection), null);
-        this.notToBeGCd = chat;
 
-        Auction auction = new XMPPAuction(chat);
-        MessageListener translator = new AuctionMessageTranslator(connection.getUser(),
-                new AuctionSniper(new SwingThreadSniperListener(snipers), auction, itemId));
-        chat.addMessageListener(translator);
-        auction.join();
     }
 
     private static String auctionId(String itemId, XMPPConnection connection) {

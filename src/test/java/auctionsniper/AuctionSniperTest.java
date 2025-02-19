@@ -29,7 +29,7 @@ public class AuctionSniperTest {
         int bid = price + increment;
         sniper.currentPrice(price, increment, AuctionEventListener.PriceSource.FromOtherBidder);
 
-        Mockito.verify(auction).bid(bid);
+        verify(auction).bid(bid);
         verify(sniperListener, atLeast(1)).sniperStateChanged(
                 new SniperSnapshot(ITEM_ID, price, bid, SniperState.BIDDING));
     }

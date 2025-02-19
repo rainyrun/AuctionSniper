@@ -2,9 +2,10 @@ package xmpp;
 
 public class Chat {
     private MessageListener messageListener;
-    private ChatManager chatManager;
+    private XMPPConnection.ChatManager chatManager;
+    private Chat peerChat;
 
-    public Chat(ChatManager chatManager) {
+    public Chat(XMPPConnection.ChatManager chatManager) {
         this.chatManager = chatManager;
     }
 
@@ -13,9 +14,7 @@ public class Chat {
     }
 
     public void sendMessage(Message message) {
-        for (Chat chat : chatManager.getPeerChats()) {
-            chat.messageListener.processMessage(chat, message);
-        }
+        peerChat.messageListener.processMessage(this, message);
     }
 
     public void sendMessage(String message) {
@@ -24,10 +23,14 @@ public class Chat {
     }
 
     public String getParticipant() {
-        return chatManager.getPeerChats().get(0).chatManager.getUsername();
+        return peerChat.chatManager.getUsername();
     }
 
-    public ChatManager getChatManager() {
+    public XMPPConnection.ChatManager getChatManager() {
         return chatManager;
+    }
+
+    public void setPeerChat(Chat chat) {
+        this.peerChat = chat;
     }
 }
