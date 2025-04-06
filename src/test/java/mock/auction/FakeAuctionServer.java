@@ -2,10 +2,10 @@ package mock.auction;
 
 import org.junit.jupiter.api.Assertions;
 import sniper.Main;
-import xmpp.Chat;
-import xmpp.ChatManagerListener;
-import xmpp.Message;
-import xmpp.XMPPConnection;
+import xmppmock.Chat;
+import xmppmock.ChatManagerListener;
+import xmppmock.Message;
+import xmppmock.XMPPConnection;
 
 import java.util.function.Function;
 

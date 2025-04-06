@@ -1,16 +1,18 @@
-package sniper;
+package sniper.xmpp;
 
-import xmpp.Chat;
-import xmpp.Message;
-import xmpp.MessageListener;
+import sniper.AuctionEventListener;
+import xmppmock.Chat;
+import xmppmock.Message;
+import xmppmock.MessageListener;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AuctionMessageTranslator implements MessageListener {
-    private final AuctionEventListener listener;
+    private final List<AuctionEventListener> listener;
     private final String sniperId;
-    public AuctionMessageTranslator(String sniperId, AuctionEventListener listener) {
+    public AuctionMessageTranslator(String sniperId, List<AuctionEventListener> listener) {
         this.listener = listener;
         this.sniperId = sniperId;
     }
@@ -20,9 +22,9 @@ public class AuctionMessageTranslator implements MessageListener {
         AuctionEvent event = AuctionEvent.from(message.getBody());
         String type = event.type();
         if ("CLOSE".equals(type)) {
-            listener.auctionClosed();
+            listener.get(0).auctionClosed();
         } else if ("PRICE".equals(type)) {
-            listener.currentPrice(event.currentPrice(), event.increment(), event.isFrom(sniperId));
+            listener.get(0).currentPrice(event.currentPrice(), event.increment(), event.isFrom(sniperId));
         }
     }
 

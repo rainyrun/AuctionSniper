@@ -1,9 +1,12 @@
 package auctionsniper;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 import sniper.*;
+import sniper.Auction;
 
 import static org.mockito.Mockito.*;
 
@@ -12,7 +15,12 @@ public class AuctionSniperTest {
 
     private SniperListener sniperListener = Mockito.mock(SniperListener.class);
     private Auction auction = Mockito.mock(Auction.class);
-    private AuctionSniper sniper = new AuctionSniper(sniperListener, auction, ITEM_ID);
+    private AuctionSniper sniper = new AuctionSniper(auction, ITEM_ID);
+
+    @BeforeEach
+    void init() {
+        sniper.addSniperListener(sniperListener);
+    }
 
     @Test
     void reportsLostWhenAuctionCloseImmediately() {

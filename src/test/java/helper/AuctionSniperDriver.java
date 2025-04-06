@@ -10,7 +10,7 @@ public class AuctionSniperDriver {
 
     public void showSniperStatus(String itemId, int lastPrice, int lastBid, SniperState state) {
         SniperSnapshot snapshot = new SniperSnapshot(itemId, lastPrice, lastBid, state);
-        MainWindow.snipers.rowMatching(snapshot);
+        MainWindow.portfolio.getPortfolioListener().rowMatching(snapshot);
     }
 
     public void dispose() {

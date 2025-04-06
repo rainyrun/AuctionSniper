@@ -4,15 +4,17 @@ import helper.ApplicationRunner;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import sniper.AuctionEventListener;
-import sniper.AuctionMessageTranslator;
+import sniper.xmpp.AuctionMessageTranslator;
 import sniper.Main;
-import xmpp.Chat;
-import xmpp.Message;
+import xmppmock.Chat;
+import xmppmock.Message;
+
+import java.util.Arrays;
 
 public class AuctionMessageTranslatorTest {
     public static final Chat UNUSED_CHAT = null;
     private final AuctionEventListener listener = Mockito.mock(AuctionEventListener.class);
-    private final AuctionMessageTranslator translator = new AuctionMessageTranslator(ApplicationRunner.SNIPER_ID, listener);
+    private final AuctionMessageTranslator translator = new AuctionMessageTranslator(ApplicationRunner.SNIPER_ID, Arrays.asList(listener));
 
     @Test
     void notifiesAuctionClosedWhenCloseMessageReceived() {

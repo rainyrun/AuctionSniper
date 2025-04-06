@@ -1,4 +1,4 @@
-package xmpp;
+package xmppmock;
 
 public class Message {
     private String message;

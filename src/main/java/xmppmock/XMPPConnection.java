@@ -1,4 +1,4 @@
-package xmpp;
+package xmppmock;
 
 import java.util.HashMap;
 import java.util.Map;

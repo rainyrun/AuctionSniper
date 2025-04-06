@@ -3,7 +3,7 @@ package sniper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SnipersTableModel implements SniperListener {
+public class SnipersTableModel implements SniperListener, PortfolioListener {
     private List<SniperSnapshot> snapshots = new ArrayList<>();
 
     @Override
@@ -31,5 +31,15 @@ public class SnipersTableModel implements SniperListener {
 
     public SniperSnapshot getRow(int row) {
         return snapshots.get(row - 1);
+    }
+
+    private void addSniperSnapshot(SniperSnapshot snapshot) {
+        snapshots.add(snapshot);
+    }
+
+    @Override
+    public void sniperAdded(AuctionSniper sniper) {
+        addSniperSnapshot(sniper.getSnapshot());
+        sniper.addSniperListener(new SwingThreadSniperListener(this));
     }
 }

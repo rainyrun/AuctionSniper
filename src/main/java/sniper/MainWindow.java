@@ -1,11 +1,13 @@
 package sniper;
 
 public class MainWindow {
-    public static SnipersTableModel snipers;
+    public static SniperPortfolio portfolio;
     private static UserRequestListener userRequestListener;
 
-    public MainWindow(SnipersTableModel snipers) {
-        MainWindow.snipers = snipers;
+    public MainWindow(SniperPortfolio portfolio) {
+        SnipersTableModel snipersTableModel = new SnipersTableModel();
+        portfolio.addPortfolioListener(snipersTableModel);
+        MainWindow.portfolio = portfolio;
     }
 
     public static void addItem(String itemId) {
