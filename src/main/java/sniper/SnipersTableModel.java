@@ -1,20 +1,22 @@
 package sniper;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
 
 public class SnipersTableModel implements SniperListener, PortfolioListener {
     private List<SniperSnapshot> snapshots = new ArrayList<>();
 
     @Override
     public void sniperStateChanged(SniperSnapshot snapshot) {
-        int row = rowMatching(snapshot);
+        int row = rowMatching(snapshot, (item) -> snapshot.itemId.equals(item.itemId));
         snapshots.set(row, snapshot);
     }
 
-    public int rowMatching(SniperSnapshot snapshot) {
+    public int rowMatching(SniperSnapshot snapshot, Function<SniperSnapshot, Boolean> function) {
         for (int i = 0; i < snapshots.size(); i++) {
-            if (snapshot.isForSameItemAs(snapshots.get(i))) {
+            if (function.apply(snapshots.get(i))) {
                 return i;
             }
         }

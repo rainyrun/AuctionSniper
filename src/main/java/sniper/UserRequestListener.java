@@ -1,5 +1,5 @@
 package sniper;
 
 public interface UserRequestListener {
-    void joinAuction(String itemId);
+    void joinAuction(Item item);
 }

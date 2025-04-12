@@ -16,7 +16,7 @@ public class SniperLauncherTest {
     public void addsNewSniperToCollectorAndThenJoinsAuction() {
         final String itemId = "item 123";
         when(auctionHouse.auctionFor(itemId)).thenReturn(auction);
-        launcher.joinAuction(itemId);
+        launcher.joinAuction(new Item(itemId, Integer.MAX_VALUE));
 
         InOrder inOrder = inOrder(auction, sniperCollector);
         inOrder.verify(auction).addAuctionEventListener(sniperForItem(itemId));

@@ -10,8 +10,8 @@ public class MainWindow {
         MainWindow.portfolio = portfolio;
     }
 
-    public static void addItem(String itemId) {
-        userRequestListener.joinAuction(itemId);
+    public static void addItem(String itemId, int stopPrice) {
+        userRequestListener.joinAuction(new Item(itemId, stopPrice));
     }
 
     public static void addUserRequestListener(UserRequestListener userRequestListener) {
