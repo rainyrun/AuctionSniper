@@ -1,7 +1,12 @@
 package xmppmock;
 
+import sniper.xmpp.AuctionMessageTranslator;
+
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 public class Chat {
-    private MessageListener messageListener;
+    private List<MessageListener> messageListeners = new CopyOnWriteArrayList<>();
     private XMPPConnection.ChatManager chatManager;
     private Chat peerChat;
 
@@ -10,11 +15,15 @@ public class Chat {
     }
 
     public void addMessageListener(MessageListener messageListener) {
-        this.messageListener = messageListener;
+        if (messageListener != null) {
+            this.messageListeners.add(messageListener);
+        }
     }
 
-    public void sendMessage(Message message) {
-        peerChat.messageListener.processMessage(this, message);
+    public synchronized void sendMessage(Message message) {
+        for (MessageListener listener : peerChat.messageListeners) {
+            listener.processMessage(this, message);
+        }
     }
 
     public void sendMessage(String message) {
@@ -32,5 +41,9 @@ public class Chat {
 
     public void setPeerChat(Chat chat) {
         this.peerChat = chat;
+    }
+
+    public synchronized void removeMessageListener(AuctionMessageTranslator translator) {
+        messageListeners.removeIf(listener -> Objects.equals(listener, translator));
     }
 }

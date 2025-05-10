@@ -26,6 +26,4 @@ public class Main {
         ui.addUserRequestListener(new SniperLauncher(portfolio, auctionHouse));
     }
 
-
-
 }

@@ -5,6 +5,8 @@ public interface AuctionEventListener {
 
     void currentPrice(int price, int increment, PriceSource priceSource);
 
+    void auctionFailed();
+
     enum PriceSource {
         FromSniper, FromOtherBidder;
     }

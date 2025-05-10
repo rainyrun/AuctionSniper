@@ -1,9 +1,11 @@
 package helper;
 
 import mock.auction.FakeAuctionServer;
+import sniper.AuctionLogDriver;
 import sniper.Main;
 import sniper.SniperState;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import static mock.auction.FakeAuctionServer.XMPP_HOSTNAME;
@@ -11,6 +13,7 @@ import static mock.auction.FakeAuctionServer.XMPP_HOSTNAME;
 public class ApplicationRunner {
     public static final String SNIPER_ID = "sniper";
     private static final String SNIPER_PASSWORD = "sniper";
+    private AuctionLogDriver logDriver = new AuctionLogDriver();
 
     private AuctionSniperDriver driver = new AuctionSniperDriver();; // gui test driver
 
@@ -61,6 +64,7 @@ public class ApplicationRunner {
     }
 
     public void startBiddingWithStopPrice(int stopPrice, FakeAuctionServer auction) {
+        logDriver.clearLog();
         startSniper(new FakeAuctionServer[]{auction});
         String itemId = auction.getItemId();
         driver.startBiddingFor(itemId, stopPrice);
@@ -69,5 +73,14 @@ public class ApplicationRunner {
 
     public void hasShownSniperIsLosing(FakeAuctionServer auction, int lastPrice, int lastBid) {
         driver.showSniperStatus(auction.getItemId(), lastPrice, lastBid, SniperState.LOSING);
+    }
+
+    public void reportsInvalidMessage(FakeAuctionServer auction, String brokenMessage) throws IOException {
+        logDriver.hasEntry(brokenMessage);
+
+    }
+
+    public void showsSniperHasFailed(FakeAuctionServer auction) {
+        driver.showSniperStatus(auction.getItemId(), 0, 0, SniperState.FAILED);
     }
 }

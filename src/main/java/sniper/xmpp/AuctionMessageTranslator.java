@@ -1,6 +1,7 @@
 package sniper.xmpp;
 
 import sniper.AuctionEventListener;
+import sniper.XMPPFailureReporter;
 import xmppmock.Chat;
 import xmppmock.Message;
 import xmppmock.MessageListener;
@@ -10,21 +11,38 @@ import java.util.List;
 import java.util.Map;
 
 public class AuctionMessageTranslator implements MessageListener {
-    private final List<AuctionEventListener> listener;
+    private final List<AuctionEventListener> listeners;
+    private final XMPPFailureReporter failureReporter;
     private final String sniperId;
-    public AuctionMessageTranslator(String sniperId, List<AuctionEventListener> listener) {
-        this.listener = listener;
+    public AuctionMessageTranslator(String sniperId, List<AuctionEventListener> listener, XMPPFailureReporter failureReporter) {
+        this.listeners = listener;
         this.sniperId = sniperId;
+        this.failureReporter = failureReporter;
     }
 
     @Override
     public void processMessage(Chat chat, Message message) {
+        try {
+            translate(message);
+        } catch (Exception e) {
+            failureReporter.cannotTranslateMessage(sniperId, message.getBody(), e);
+            for (AuctionEventListener listener : listeners) {
+                listener.auctionFailed();
+            }
+        }
+    }
+
+    private void translate(Message message) {
         AuctionEvent event = AuctionEvent.from(message.getBody());
         String type = event.type();
         if ("CLOSE".equals(type)) {
-            listener.get(0).auctionClosed();
+            for (AuctionEventListener listener : listeners) {
+                listener.auctionClosed();
+            }
         } else if ("PRICE".equals(type)) {
-            listener.get(0).currentPrice(event.currentPrice(), event.increment(), event.isFrom(sniperId));
+            for (AuctionEventListener listener : listeners) {
+                listener.currentPrice(event.currentPrice(), event.increment(), event.isFrom(sniperId));
+            }
         }
     }
 
@@ -36,6 +54,10 @@ public class AuctionMessageTranslator implements MessageListener {
         }
 
         private String get(String fieldName) {
+            String value = fields.get(fieldName);
+            if (value == null || value.length() == 0) {
+                throw new MissingValueException();
+            }
             return fields.get(fieldName);
         }
 

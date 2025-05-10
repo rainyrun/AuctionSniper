@@ -67,4 +67,8 @@ public class FakeAuctionServer {
     public void hasReceivedBid(int price, String sniperId) throws InterruptedException {
         receivesAMessageMatching(sniperId, msg -> msg.equals(String.format("Command: BID; Price: %d;", price)));
     }
+
+    public void sendInvalidMessageContaining(String brokenMessage) {
+        currentChat.sendMessage(brokenMessage);
+    }
 }
