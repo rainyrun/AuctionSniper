@@ -1,4 +1,4 @@
-package sniper;
+package extend;
 
 import java.util.logging.Logger;
 

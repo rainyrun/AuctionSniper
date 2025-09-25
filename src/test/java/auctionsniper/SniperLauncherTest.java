@@ -3,6 +3,10 @@ package auctionsniper;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
 import sniper.*;
+import auction.Auction;
+import auction.AuctionHouse;
+import auction.AuctionSniper;
+import pojo.Item;
 
 import static org.mockito.Mockito.*;
 

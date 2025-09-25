@@ -1,4 +1,9 @@
-package sniper;
+package ui;
+
+import pojo.Item;
+import sniper.SniperPortfolio;
+import sniper.SnipersTableModel;
+import sniper.UserRequestListener;
 
 public class MainWindow {
     public static SniperPortfolio portfolio;

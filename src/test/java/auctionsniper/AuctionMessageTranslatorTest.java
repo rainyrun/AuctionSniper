@@ -1,12 +1,11 @@
 package auctionsniper;
 
 import helper.ApplicationRunner;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import sniper.AuctionEventListener;
-import sniper.XMPPFailureReporter;
-import sniper.xmpp.AuctionMessageTranslator;
+import auction.AuctionEventListener;
+import extend.XMPPFailureReporter;
+import xmpp.AuctionMessageTranslator;
 import sniper.Main;
 import xmppmock.Chat;
 import xmppmock.Message;

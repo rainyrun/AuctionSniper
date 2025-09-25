@@ -1,4 +1,8 @@
-package sniper;
+package auction;
+
+import pojo.Item;
+import sniper.SniperListener;
+import sniper.SniperSnapshot;
 
 public class AuctionSniper implements AuctionEventListener {
     private SniperListener sniperListener;

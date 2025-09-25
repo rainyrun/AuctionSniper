@@ -1,4 +1,4 @@
-package sniper;
+package auction;
 
 import java.io.File;
 import java.io.IOException;

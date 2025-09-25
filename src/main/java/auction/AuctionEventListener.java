@@ -1,4 +1,4 @@
-package sniper;
+package auction;
 
 public interface AuctionEventListener {
     void auctionClosed();

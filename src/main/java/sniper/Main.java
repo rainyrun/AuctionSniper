@@ -1,5 +1,9 @@
 package sniper;
 
+import auction.AuctionHouse;
+import auction.XMPPAuctionHouse;
+import ui.MainWindow;
+
 public class Main {
     public static final String JOIN_COMMAND_FORMAT = "Command: JOIN;";
     public static final String BID_COMMAND_FORMAT = "Command: BID; Price: %d;";

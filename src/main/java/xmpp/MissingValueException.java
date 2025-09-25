@@ -1,4 +1,4 @@
-package sniper.xmpp;
+package xmpp;
 
 public class MissingValueException extends RuntimeException {
 }

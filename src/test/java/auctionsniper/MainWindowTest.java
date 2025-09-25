@@ -3,8 +3,8 @@ package auctionsniper;
 import helper.AuctionSniperDriver;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import sniper.Item;
-import sniper.MainWindow;
+import pojo.Item;
+import ui.MainWindow;
 import sniper.SniperPortfolio;
 import sniper.UserRequestListener;
 

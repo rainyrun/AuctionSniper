@@ -1,4 +1,8 @@
-package sniper;
+package ui;
+
+import sniper.SniperListener;
+import sniper.SniperSnapshot;
+import sniper.SnipersTableModel;
 
 public class SwingThreadSniperListener implements SniperListener {
 

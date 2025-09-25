@@ -1,4 +1,4 @@
-package sniper;
+package auction;
 
 public interface Auction {
     void bid(int price);

@@ -1,5 +1,8 @@
 package sniper;
 
+import auction.AuctionSniper;
+import ui.PortfolioListener;
+
 import java.util.ArrayList;
 import java.util.List;
 

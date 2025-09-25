@@ -1,4 +1,4 @@
-package sniper;
+package pojo;
 
 import java.util.Objects;
 

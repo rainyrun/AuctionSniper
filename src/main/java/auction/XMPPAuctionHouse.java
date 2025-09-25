@@ -1,6 +1,6 @@
-package sniper;
+package auction;
 
-import sniper.xmpp.XMPPAuction;
+import xmpp.XMPPAuction;
 import xmppmock.XMPPConnection;
 
 public class XMPPAuctionHouse implements AuctionHouse {

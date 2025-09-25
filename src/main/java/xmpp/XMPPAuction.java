@@ -1,9 +1,9 @@
-package sniper.xmpp;
+package xmpp;
 
-import sniper.Auction;
-import sniper.AuctionEventListener;
+import auction.Auction;
+import auction.AuctionEventListener;
 import sniper.Main;
-import sniper.XMPPFailureReporter;
+import extend.XMPPFailureReporter;
 import xmppmock.Chat;
 import xmppmock.XMPPConnection;
 

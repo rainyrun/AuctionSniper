@@ -1,6 +1,6 @@
 package helper;
 
-import sniper.MainWindow;
+import ui.MainWindow;
 import sniper.SniperSnapshot;
 import sniper.SniperState;
 

@@ -1,12 +1,11 @@
 package helper;
 
 import mock.auction.FakeAuctionServer;
-import sniper.AuctionLogDriver;
+import auction.AuctionLogDriver;
 import sniper.Main;
 import sniper.SniperState;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import static mock.auction.FakeAuctionServer.XMPP_HOSTNAME;
 

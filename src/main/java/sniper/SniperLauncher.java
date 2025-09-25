@@ -1,5 +1,10 @@
 package sniper;
 
+import auction.Auction;
+import auction.AuctionHouse;
+import auction.AuctionSniper;
+import pojo.Item;
+
 public class SniperLauncher implements UserRequestListener {
     private final SniperCollector snipers;
     private final AuctionHouse auctionHouse;

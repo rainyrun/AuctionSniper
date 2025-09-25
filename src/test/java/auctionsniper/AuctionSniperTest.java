@@ -1,12 +1,14 @@
 package auctionsniper;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 import sniper.*;
-import sniper.Auction;
+import auction.Auction;
+import auction.AuctionEventListener;
+import auction.AuctionSniper;
+import pojo.Item;
 
 import static org.mockito.Mockito.*;
 

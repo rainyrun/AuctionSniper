@@ -3,9 +3,9 @@ package auctionsniper;
 import mock.auction.FakeAuctionServer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import sniper.Auction;
-import sniper.AuctionEventListener;
-import sniper.XMPPAuctionHouse;
+import auction.Auction;
+import auction.AuctionEventListener;
+import auction.XMPPAuctionHouse;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;

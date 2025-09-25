@@ -1,6 +1,6 @@
 package xmppmock;
 
-import sniper.xmpp.AuctionMessageTranslator;
+import xmpp.AuctionMessageTranslator;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
